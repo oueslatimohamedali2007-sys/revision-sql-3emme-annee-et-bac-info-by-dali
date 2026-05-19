@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annexe SQL — Accueil</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+
+<header>
+  <div class="wrap topbar">
+    <div class="brand">
+      <h1>Bienvenue sur l'Annexe SQL</h1>
+      <p>Commencez votre révision avec un guide clair et interactif.</p>
+    </div>
+    <nav>
+      <a href="welcome.html" class="btn">👋 Bienvenue</a>
+      <a href="reference.html" class="btn">📋 Référence</a>
+      <button class="btn" id="themeBtn">☀️</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap hero">
+  <div class="main-card">
+    <span class="badge">Accueil</span>
+    <h2 class="hero-title">Maîtriser le langage SQL facilement</h2>
+    <p class="hero-desc">Explorez les chapitres, révisez les commandes SQL essentielles et utilisez des exemples concrets pour le programme SI.</p>
+
+    <div class="search-row">
+      <a href="types.html" class="btn">Commencer les chapitres</a>
+      <a href="reference.html" class="btn">Ouvrir la référence</a>
+    </div>
+
+    <div class="lesson-choice">
+      <a href="ddl.html" class="lesson-box">
+        <h4>📚 1. Définition (DDL)</h4>
+        <p>CREATE DATABASE, DROP, ALTER TABLE, ADD/DROP CONSTRAINT.</p>
+      </a>
+      <a href="types.html" class="lesson-box">
+        <h4>📝 2. Types de données</h4>
+        <p>Formats des colonnes : INT, DECIMAL, VARCHAR, DATE, DATETIME...</p>
+      </a>
+      <a href="contraintes.html" class="lesson-box">
+        <h4>🔒 3. Contraintes d'intégrité</h4>
+        <p>NOT NULL, CHECK, PRIMARY KEY, FOREIGN KEY, CASCADE.</p>
+      </a>
+      <a href="dql.html" class="lesson-box">
+        <h4>🔍 4. Consultation (DQL)</h4>
+        <p>SELECT, DISTINCT, WHERE, ORDER BY, GROUP BY, HAVING.</p>
+      </a>
+      <a href="dml.html" class="lesson-box">
+        <h4>💾 5. Manipulation (DML)</h4>
+        <p>Mettre à jour vos tables avec INSERT INTO, UPDATE et DELETE.</p>
+      </a>
+      <a href="operateurs.html" class="lesson-box">
+        <h4>⚡ 6. Opérateurs de Sélection</h4>
+        <p>Comparaisons, BETWEEN, LIKE, IS NULL, AND, OR, NOT.</p>
+      </a>
+      <a href="dates.html" class="lesson-box">
+        <h4>📅 7. Fonctions Date & Heure</h4>
+        <p>NOW(), DATE(), DAY(), MONTH(), YEAR(), DATEDIFF().</p>
+      </a>
+      <a href="agregation.html" class="lesson-box">
+        <h4>📊 8. Fonctions d'Agrégation</h4>
+        <p>Calculs statistiques : COUNT(), SUM(), AVG(), MAX(), MIN().</p>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 Site SQL Modulaire — Section SI (3 STI & 4 STI)</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
