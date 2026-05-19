@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><title>6. Opérateurs de comparaison</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+
+<header><div class="wrap topbar"><div class="brand"><h1>Annexe SQL — Opérateurs</h1></div><nav><a href="index.html" class="btn">🏠 Accueil</a><a href="reference.html" class="btn">📋 Référence</a><button class="btn" id="themeBtn">☀️</button></nav></div></header>
+<main class="wrap hero">
+  <div class="lesson-header"><span class="badge">Chapitre 6</span><h2 class="hero-title">Opérateurs Logiques et de Comparaison</h2><p class="hero-desc">Créer des filtres conditionnels précis dans vos clauses WHERE.</p></div>
+  
+  <div class="content-card">
+    <h3>Opérateurs de Comparaison Basiques</h3>
+    <p>Comparer les valeurs dans les conditions WHERE.</p>
+    <pre><code>-- Égalité
+SELECT * FROM eleves WHERE classe = '3STI';
+
+-- Inégalité (deux syntaxes équivalentes)
+SELECT * FROM eleves WHERE note != 15;
+SELECT * FROM eleves WHERE note <> 15;
+
+-- Supérieur / Inférieur
+SELECT * FROM eleves WHERE note > 12;
+SELECT * FROM eleves WHERE note <= 16;
+
+-- Combinaisons
+SELECT * FROM eleves WHERE note >= 10 AND note <= 20;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>LIKE — Recherche par Motif</h3>
+    <p>Recherche des chaînes de caractères correspondant à un motif. % = zéro ou plusieurs caractères, _ = exactement un caractère.</p>
+    <pre><code>-- Noms commençant par 'A'
+SELECT * FROM eleves WHERE nom LIKE 'A%';
+
+-- Noms se terminant par 'i'
+SELECT * FROM eleves WHERE nom LIKE '%i';
+
+-- Noms contenant 'ali'
+SELECT * FROM eleves WHERE nom LIKE '%ali%';
+
+-- Noms de 4 caractères commençant par 'B'
+SELECT * FROM eleves WHERE nom LIKE 'B___';</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>BETWEEN — Intervalle de Valeurs</h3>
+    <p>Sélectionne les valeurs dans une plage (inclusive des bornes).</p>
+    <pre><code>-- Notes entre 10 et 16 (inclus)
+SELECT * FROM eleves WHERE note BETWEEN 10 AND 16;
+
+-- Dates dans une période
+SELECT * FROM eleves WHERE date_inscription BETWEEN '2026-01-01' AND '2026-05-19';
+
+-- Équivalent avec AND
+SELECT * FROM eleves WHERE note >= 10 AND note <= 16;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>IN — Appartenance à une Liste</h3>
+    <p>Vérifie si une valeur est dans une liste prédéfinie.</p>
+    <pre><code>-- Élèves de certaines classes
+SELECT * FROM eleves WHERE classe IN ('3STI', '4STI', 'ISI');
+
+-- Certains identifiants
+SELECT * FROM eleves WHERE id IN (1, 5, 10, 23);
+
+-- Équivalent avec OR
+SELECT * FROM eleves WHERE classe = '3STI' OR classe = '4STI' OR classe = 'ISI';</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>IS NULL / IS NOT NULL — Valeurs Nulles</h3>
+    <p>Teste la présence ou l'absence de valeur (NULL = pas de valeur).</p>
+    <pre><code>-- Élèves sans email enregistré
+SELECT * FROM eleves WHERE email IS NULL;
+
+-- Élèves avec date de naissance
+SELECT * FROM eleves WHERE date_naissance IS NOT NULL;
+
+-- Note manquante
+SELECT * FROM eleves WHERE note IS NULL;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>AND, OR, NOT — Opérateurs Logiques</h3>
+    <p>Combine plusieurs conditions pour créer des filtres complexes.</p>
+    <pre><code>-- AND: toutes les conditions doivent être vraies
+SELECT * FROM eleves WHERE classe = '3STI' AND note > 15;
+
+-- OR: au moins une condition doit être vraie
+SELECT * FROM eleves WHERE classe = '3STI' OR classe = '4STI';
+
+-- NOT: inverse une condition
+SELECT * FROM eleves WHERE NOT (classe = '3STI');
+
+-- Combinaison complexe
+SELECT * FROM eleves 
+WHERE (classe = '3STI' OR classe = '4STI') 
+  AND note >= 12 
+  AND email IS NOT NULL;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>💡 Cas d'usage pratiques</h3>
+    <p>Exemples combinant plusieurs opérateurs:</p>
+    <pre><code>-- Recherche avancée: élèves de 3STI avec bonne note
+SELECT * FROM eleves 
+WHERE classe = '3STI' 
+  AND note > 14 
+  AND date_inscription BETWEEN '2025-09-01' AND '2026-05-31';
+
+-- Filtre complexe: noms commençant par A-C ou D
+SELECT * FROM eleves 
+WHERE (nom LIKE 'A%' OR nom LIKE 'B%' OR nom LIKE 'C%' OR nom LIKE 'D%')
+  AND note IS NOT NULL;
+
+-- Exclusion: tout sauf les 3STI avec note faible
+SELECT * FROM eleves 
+WHERE NOT (classe = '3STI' AND note < 10);</code></pre>
+  </div>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>

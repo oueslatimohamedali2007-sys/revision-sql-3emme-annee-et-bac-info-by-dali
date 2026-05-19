@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><title>8. Fonctions d'Agrégation</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+<header><div class="wrap topbar"><div class="brand"><h1>Annexe SQL — Agrégation</h1></div><nav><a href="index.html" class="btn">🏠 Accueil</a><a href="reference.html" class="btn">📋 Référence</a><button class="btn" id="themeBtn">☀️</button></nav></div></header>
+<main class="wrap hero">
+  <div class="lesson-header"><span class="badge">Chapitre 8</span><h2 class="hero-title">Calculs Statistiques (Agrégations)</h2><p class="hero-desc">Calculs globaux appliqués sur un ensemble de lignes pour résumer les données.</p></div>
+  
+  <div class="content-card">
+    <h3>COUNT() — Comptage de lignes</h3>
+    <p>Compte le nombre de lignes ou de valeurs non NULL dans une colonne.</p>
+    <pre><code>-- Compter toutes les lignes
+SELECT COUNT(*) AS total_eleves FROM eleves;
+
+-- Compter les valeurs non NULL
+SELECT COUNT(email) AS eleves_avec_email FROM eleves;
+
+-- Compter les valeurs distinctes
+SELECT COUNT(DISTINCT classe) AS nombre_classes FROM eleves;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>SUM() — Somme de valeurs</h3>
+    <p>Calcule la somme totale des valeurs numériques dans une colonne.</p>
+    <pre><code>-- Somme totale des notes
+SELECT SUM(note) AS total_points FROM eleves;
+
+-- Somme avec condition
+SELECT SUM(note) AS somme FROM eleves WHERE classe = '3STI';
+
+-- Somme par groupe
+SELECT classe, SUM(note) AS total_classe 
+FROM eleves 
+GROUP BY classe;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>AVG() — Moyenne de valeurs</h3>
+    <p>Calcule la moyenne (moyenne arithmétique) des valeurs numériques.</p>
+    <pre><code>-- Moyenne générale
+SELECT AVG(note) AS moyenne_classe FROM eleves;
+
+-- Moyenne par classe
+SELECT classe, AVG(note) AS moyenne 
+FROM eleves 
+GROUP BY classe;
+
+-- Arrondir la moyenne
+SELECT ROUND(AVG(note), 2) AS moyenne_arrondie FROM eleves;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>MAX() et MIN() — Valeurs extrêmes</h3>
+    <p>Trouvent la valeur maximale et minimale dans une colonne.</p>
+    <pre><code>-- Meilleure et pire note
+SELECT MAX(note) AS meilleure_note, MIN(note) AS pire_note FROM eleves;
+
+-- Avec GROUP BY
+SELECT classe, MAX(note) AS meilleure, MIN(note) AS pire 
+FROM eleves 
+GROUP BY classe;
+
+-- Plus vieux et plus jeune élève
+SELECT MAX(date_naissance) AS plus_jeune, MIN(date_naissance) AS plus_vieux 
+FROM eleves;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>GROUP BY — Grouper par critères</h3>
+    <p>Regroupe les lignes par une ou plusieurs colonnes avant d'appliquer les agrégations.</p>
+    <pre><code>-- Notes par classe
+SELECT classe, COUNT(*) AS nb_eleves, AVG(note) AS moyenne 
+FROM eleves 
+GROUP BY classe;
+
+-- Regrouper par plusieurs colonnes
+SELECT classe, genre, COUNT(*) AS nombre 
+FROM eleves 
+GROUP BY classe, genre;
+
+-- Grouper avec ORDER BY
+SELECT classe, SUM(note) AS total 
+FROM eleves 
+GROUP BY classe 
+ORDER BY total DESC;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>HAVING — Filtrer après agrégation</h3>
+    <p>Applique des conditions sur les résultats agrégés (similaire à WHERE mais après GROUP BY).</p>
+    <pre><code>-- Classes avec moyenne supérieure à 14
+SELECT classe, AVG(note) AS moyenne 
+FROM eleves 
+GROUP BY classe 
+HAVING AVG(note) > 14;
+
+-- Classes avec plus de 20 élèves
+SELECT classe, COUNT(*) AS nombre 
+FROM eleves 
+GROUP BY classe 
+HAVING COUNT(*) > 20;
+
+-- Combiner WHERE et HAVING
+SELECT classe, AVG(note) AS moyenne, COUNT(*) AS nombre
+FROM eleves 
+WHERE annee = 2026 
+GROUP BY classe 
+HAVING COUNT(*) >= 15;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>💡 Cas d'usage pratiques</h3>
+    <p>Exemples complets montrant les agrégations en contexte réel:</p>
+    <pre><code>-- Tableau de bord école
+SELECT 
+  classe,
+  COUNT(*) AS total_eleves,
+  AVG(note) AS moyenne_classe,
+  MAX(note) AS meilleure_note,
+  MIN(note) AS pire_note,
+  COUNT(CASE WHEN note >= 10 THEN 1 END) AS reussis
+FROM eleves 
+GROUP BY classe 
+HAVING COUNT(*) > 0
+ORDER BY moyenne_classe DESC;
+
+-- Analyse par période
+SELECT 
+  MONTH(date_inscription) AS mois,
+  COUNT(*) AS nouvelles_inscriptions
+FROM eleves 
+WHERE YEAR(date_inscription) = 2026
+GROUP BY MONTH(date_inscription)
+ORDER BY mois;</code></pre>
+  </div>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>

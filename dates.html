@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><title>7. Fonctions Date</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+
+<header><div class="wrap topbar"><div class="brand"><h1>Annexe SQL — Dates</h1></div><nav><a href="index.html" class="btn">🏠 Accueil</a><a href="reference.html" class="btn">📋 Référence</a><button class="btn" id="themeBtn">☀️</button></nav></div></header>
+<main class="wrap hero">
+  <div class="lesson-header"><span class="badge">Chapitre 7</span><h2 class="hero-title">Fonctions Temporelles</h2><p class="hero-desc">Extraire ou manipuler des formats temporels pour analyser des événements datés.</p></div>
+  
+  <div class="content-card">
+    <h3>NOW() — Date et Heure Actuelle</h3>
+    <p>Retourne la date et l'heure du système au moment de l'exécution.</p>
+    <pre><code>-- Récupérer la date et heure actuelles
+SELECT NOW();
+-- Résultat: 2026-05-19 14:30:45
+
+-- Insérer un enregistrement avec la date courante
+INSERT INTO logs (message, timestamp) VALUES ('Connexion', NOW());</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>DATE() — Extraire la Date</h3>
+    <p>Extrait uniquement la date d'une valeur DATETIME (sans l'heure).</p>
+    <pre><code>-- Extraire la date d'un timestamp
+SELECT DATE(NOW());
+-- Résultat: 2026-05-19
+
+-- Comparer des dates
+SELECT * FROM eleves WHERE DATE(date_inscription) = '2026-05-19';</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>DAY(), MONTH(), YEAR() — Extraire des Composants</h3>
+    <p>Extrait le jour, mois ou année d'une date.</p>
+    <pre><code>-- Extraire le jour (1-31)
+SELECT DAY(date_naissance) FROM eleves;
+
+-- Extraire le mois (1-12)
+SELECT MONTH(date_inscription) FROM eleves;
+
+-- Extraire l'année
+SELECT YEAR(date_naissance) FROM eleves;
+
+-- Exemple combiné: élèves nés en juin
+SELECT * FROM eleves WHERE MONTH(date_naissance) = 6;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>DATEDIFF() — Différence Entre Deux Dates</h3>
+    <p>Calcule le nombre de jours entre deux dates.</p>
+    <pre><code>-- Différence en jours
+SELECT DATEDIFF('2026-06-01', '2026-05-19') AS jours_restants;
+-- Résultat: 13
+
+-- Âge approximatif en jours
+SELECT nom, DATEDIFF(NOW(), date_naissance) AS jours_vecus 
+FROM eleves;
+
+-- Temps depuis l'inscription
+SELECT nom, DATEDIFF(NOW(), date_inscription) AS jours_inscrits 
+FROM eleves 
+ORDER BY jours_inscrits DESC;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>DATE_ADD() et DATE_SUB() — Ajouter/Soustraire des Jours</h3>
+    <p>Ajoute ou soustrait un intervalle de temps à une date.</p>
+    <pre><code>-- Ajouter 30 jours
+SELECT DATE_ADD(NOW(), INTERVAL 30 DAY) AS dans_30j;
+
+-- Soustraire 1 mois
+SELECT DATE_SUB(NOW(), INTERVAL 1 MONTH) AS il_y_a_un_mois;
+
+-- Date limite (fin de mois)
+SELECT DATE_ADD(NOW(), INTERVAL 5 DAY) AS date_limite;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>💡 Cas d'usage pratiques</h3>
+    <p>Applications réelles des fonctions temporelles:</p>
+    <pre><code>-- Inscrits aujourd'hui
+SELECT COUNT(*) FROM eleves WHERE DATE(date_inscription) = DATE(NOW());
+
+-- Anniversaires ce mois
+SELECT nom, MONTH(date_naissance) FROM eleves 
+WHERE MONTH(date_naissance) = MONTH(NOW());
+
+-- Âge approximatif en années
+SELECT nom, YEAR(NOW()) - YEAR(date_naissance) AS age_approx 
+FROM eleves;
+
+-- Rapport par mois d'inscription
+SELECT 
+  MONTH(date_inscription) AS mois, 
+  YEAR(date_inscription) AS annee,
+  COUNT(*) AS inscriptions 
+FROM eleves 
+GROUP BY YEAR(date_inscription), MONTH(date_inscription)
+ORDER BY annee DESC, mois DESC;</code></pre>
+  </div>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>

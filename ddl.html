@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><title>1. Définition des données (DDL)</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+
+<header><div class="wrap topbar"><div class="brand"><h1>Annexe SQL — DDL</h1></div><nav><a href="index.html" class="btn">🏠 Accueil</a><a href="reference.html" class="btn">📋 Référence</a><button class="btn" id="themeBtn">☀️</button></nav></div></header>
+
+<main class="wrap hero">
+  <div class="lesson-header">
+    <span class="badge">Chapitre 1</span>
+    <h2 class="hero-title">Définition des données (DDL)</h2>
+    <p class="hero-desc">Commandes pour structurer, créer et modifier les bases de données et les tables.</p>
+  </div>
+
+  <div class="content-card">
+    <h3>CREATE DATABASE — Créer une Base de Données</h3>
+    <p>Crée une nouvelle base de données vide.</p>
+    <pre><code>-- Créer une base de données simple
+CREATE DATABASE ecole_db;
+
+-- Créer si n'existe pas déjà
+CREATE DATABASE IF NOT EXISTS ecole_db;
+
+-- Créer avec encodage spécifique
+CREATE DATABASE ecole_db CHARACTER SET utf8mb4;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>DROP DATABASE — Supprimer une Base de Données</h3>
+    <p>Supprime complètement une base de données et tous ses contenus.</p>
+    <pre><code>-- Supprimer une base de données
+DROP DATABASE ecole_db;
+
+-- Supprimer si existe
+DROP DATABASE IF EXISTS ecole_db;
+
+-- ⚠️ Attention: Cette action est irréversible!</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>CREATE TABLE — Créer une Table</h3>
+    <p>Génère une table avec ses colonnes et types associés.</p>
+    <pre><code>-- Créer une table simple
+CREATE TABLE etudiants (
+  id INT PRIMARY KEY,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50),
+  classe VARCHAR(10),
+  note_bac DECIMAL(4,2)
+);
+
+-- Avec auto-incrémentation
+CREATE TABLE eleves (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE,
+  date_inscription DATE DEFAULT CURDATE()
+);</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>ALTER TABLE — ADD — Ajouter une Colonne</h3>
+    <p>Ajoute une nouvelle colonne à une table existante.</p>
+    <pre><code>-- Ajouter une simple colonne
+ALTER TABLE etudiants ADD email VARCHAR(100);
+
+-- Ajouter avec contrainte
+ALTER TABLE etudiants ADD telephone VARCHAR(20) UNIQUE;
+
+-- Ajouter à une position précise
+ALTER TABLE etudiants ADD age INT AFTER nom;
+
+-- Ajouter au début
+ALTER TABLE etudiants ADD id_classe INT FIRST;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>ALTER TABLE — DROP — Supprimer une Colonne</h3>
+    <p>Retire une colonne d'une table existante.</p>
+    <pre><code>-- Supprimer une colonne
+ALTER TABLE etudiants DROP COLUMN email;
+
+-- Supprimer plusieurs colonnes (une à la fois)
+ALTER TABLE etudiants DROP COLUMN telephone;
+ALTER TABLE etudiants DROP COLUMN age;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>ALTER TABLE — MODIFY — Modifier le Type d'une Colonne</h3>
+    <p>Change le type de données d'une colonne existante.</p>
+    <pre><code>-- Augmenter la taille d'une VARCHAR
+ALTER TABLE etudiants MODIFY nom VARCHAR(100);
+
+-- Changer le type de données
+ALTER TABLE etudiants MODIFY note_bac DECIMAL(5,2);
+
+-- Modifier avec NOT NULL
+ALTER TABLE etudiants MODIFY prenom VARCHAR(50) NOT NULL;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>ALTER TABLE — RENAME — Renommer</h3>
+    <p>Renomme une table ou une colonne.</p>
+    <pre><code>-- Renommer une colonne
+ALTER TABLE etudiants RENAME COLUMN note_bac TO note_finale;
+
+-- Renommer une table entière
+ALTER TABLE etudiants RENAME TO eleves;
+
+-- Renommer avec syntaxe alternative
+RENAME TABLE etudiants TO eleves;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>DROP TABLE — Supprimer une Table</h3>
+    <p>Supprime complètement une table et ses données.</p>
+    <pre><code>-- Supprimer une table
+DROP TABLE etudiants;
+
+-- Supprimer si existe
+DROP TABLE IF EXISTS etudiants;
+
+-- ⚠️ Attention: Toutes les données sont perdues!</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>💡 Sequence DDL Complète</h3>
+    <p>Exemple complet de création d'une structure:</p>
+    <pre><code>-- 1. Créer la base
+CREATE DATABASE IF NOT EXISTS ma_school;
+USE ma_school;
+
+-- 2. Créer une table
+CREATE TABLE classes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(20) NOT NULL UNIQUE,
+  niveau VARCHAR(10)
+);
+
+-- 3. Modifier la table
+ALTER TABLE classes ADD salle INT;
+
+-- 4. Ajouter une contrainte
+ALTER TABLE classes ADD INDEX idx_nom (nom);
+
+-- 5. Voir la structure
+DESCRIBE classes;</code></pre>
+  </div>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><title>2. Types de données</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+
+<header><div class="wrap topbar"><div class="brand"><h1>Annexe SQL — Types</h1></div><nav><a href="index.html" class="btn">🏠 Accueil</a><a href="reference.html" class="btn">📋 Référence</a><button class="btn" id="themeBtn">☀️</button></nav></div></header>
+<main class="wrap hero">
+  <div class="lesson-header">
+    <span class="badge">Chapitre 2</span>
+    <h2 class="hero-title">Types de données</h2>
+    <p class="hero-desc">Les principaux formats de données utilisables dans les colonnes pour structurer vos informations.</p>
+  </div>
+
+  <div class="content-card">
+    <h3>Types Numériques — INT</h3>
+    <p>Stocke des nombres entiers (positifs ou négatifs).</p>
+    <pre><code>-- Entier classique (-2^31 à 2^31-1)
+age INT,
+id_eleve INT,
+
+-- Variations
+TINYINT,   -- Plus petit: -128 à 127
+SMALLINT,  -- Petit: -32768 à 32767
+BIGINT,    -- Grand: -2^63 à 2^63-1
+
+-- Entier non-signé (0 et positif)
+nombre_eleves INT UNSIGNED,</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>Types Numériques — DECIMAL et FLOAT</h3>
+    <p>Stocke les nombres décimaux avec précision.</p>
+    <pre><code>-- Décimal précis (recommandé pour l'argent)
+prix DECIMAL(10, 2),        -- 10 chiffres total, 2 après la virgule
+note DECIMAL(4, 2),         -- Ex: 15.50
+-- Plage: -99999999.99 à 99999999.99
+
+-- Décimal alternatif
+montant NUMERIC(8, 3),      -- Équivalent à DECIMAL
+
+-- Nombre flottant (moins précis mais plus rapide)
+pourcentage FLOAT,
+temperature DOUBLE,</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>Types de Chaînes — VARCHAR et CHAR</h3>
+    <p>Stocke du texte avec longueur variable ou fixe.</p>
+    <pre><code>-- Chaîne de longueur variable (recommandée)
+nom VARCHAR(50),            -- Jusqu'à 50 caractères
+email VARCHAR(100),
+description VARCHAR(255),
+
+-- Chaîne de longueur fixe
+code_postal CHAR(5),        -- Exactement 5 caractères
+code_pays CHAR(2),          -- Codes pays: FR, ES, IT...
+
+-- Très long texte
+contenu TEXT,               -- Jusqu'à 65,535 caractères
+bio LONGTEXT,              -- Jusqu'à 4 Go</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>Types de Dates et Heures</h3>
+    <p>Formats pour enregistrer le temps avec différentes précisions.</p>
+    <pre><code>-- Date seule (format: YYYY-MM-DD)
+date_naissance DATE,        -- Ex: 2008-05-15
+date_inscription DATE,
+
+-- Heure seule (format: HH:MM:SS)
+heure_arrivee TIME,         -- Ex: 14:30:45
+
+-- Date ET Heure ensemble
+date_creation DATETIME,     -- Ex: 2026-05-19 14:30:45
+dernier_acces TIMESTAMP,    -- Avec fuseau horaire
+
+-- Temps écoulé (intervalle)
+duree_cours INTERVAL,       -- Ex: 2 heures 30 minutes</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>Types Spécialisés</h3>
+    <p>Types pour des besoins particuliers:</p>
+    <pre><code>-- Booléen (0 ou 1)
+actif BOOLEAN,              -- TRUE ou FALSE
+est_valide BOOL,
+
+-- Énumération (liste de valeurs fixes)
+genre ENUM('M', 'F', 'Autre'),
+statut ENUM('Inscrit', 'Actif', 'Absent', 'Diplômé'),
+
+-- Ensemble de valeurs
+competences SET('SQL', 'Python', 'JavaScript', 'C++'),
+
+-- Données binaires
+image BLOB,                 -- Fichier binaire
+signature MEDIUMBLOB,</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>💡 Table Complète d'Exemple</h3>
+    <p>Exemple réel d'une table avec différents types:</p>
+    <pre><code>CREATE TABLE eleves (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50),
+  date_naissance DATE,
+  classe VARCHAR(10),
+  note DECIMAL(4, 2),
+  email VARCHAR(100) UNIQUE,
+  telephone CHAR(12),
+  statut ENUM('Inscrit', 'Actif', 'Absent'),
+  actif BOOLEAN DEFAULT TRUE,
+  date_inscription DATETIME DEFAULT NOW(),
+  comments TEXT,
+  INDEX idx_nom (nom),
+  INDEX idx_classe (classe)
+);</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>📋 Récapitulatif des Types</h3>
+    <table class="ref-table" style="width: 100%; margin-top: 16px;">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Taille</th>
+          <th>Exemple</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>INT</strong></td>
+          <td>Entier</td>
+          <td>4 bytes</td>
+          <td>age INT</td>
+        </tr>
+        <tr>
+          <td><strong>DECIMAL(p,s)</strong></td>
+          <td>Décimal précis</td>
+          <td>Variable</td>
+          <td>prix DECIMAL(8,2)</td>
+        </tr>
+        <tr>
+          <td><strong>VARCHAR(n)</strong></td>
+          <td>Texte variable</td>
+          <td>1 à n bytes</td>
+          <td>nom VARCHAR(50)</td>
+        </tr>
+        <tr>
+          <td><strong>DATE</strong></td>
+          <td>Date</td>
+          <td>3 bytes</td>
+          <td>2026-05-19</td>
+        </tr>
+        <tr>
+          <td><strong>DATETIME</strong></td>
+          <td>Date + Heure</td>
+          <td>8 bytes</td>
+          <td>2026-05-19 14:30:45</td>
+        </tr>
+        <tr>
+          <td><strong>BOOLEAN</strong></td>
+          <td>Vrai/Faux</td>
+          <td>1 byte</td>
+          <td>TRUE ou FALSE</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

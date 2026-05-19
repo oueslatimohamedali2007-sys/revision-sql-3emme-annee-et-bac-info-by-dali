@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><title>4. Consultation des données</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+
+<header><div class="wrap topbar"><div class="brand"><h1>Annexe SQL — Consultation</h1></div><nav><a href="index.html" class="btn">🏠 Accueil</a><a href="reference.html" class="btn">📋 Référence</a><button class="btn" id="themeBtn">☀️</button></nav></div></header>
+<main class="wrap hero">
+  <div class="lesson-header"><span class="badge">Chapitre 4</span><h2 class="hero-title">Consultation et Affichage (DQL)</h2><p class="hero-desc">Interroger et filtrer les informations de la base de données avec précision.</p></div>
+  
+  <div class="content-card">
+    <h3>SELECT — La Base de la Consultation</h3>
+    <p>Sélectionne et affiche les colonnes spécifiées d'une table.</p>
+    <pre><code>-- Toutes les colonnes
+SELECT * FROM eleves;
+
+-- Colonnes spécifiques
+SELECT nom, prenom, note FROM eleves;
+
+-- Alias de colonne (renommer l'affichage)
+SELECT nom AS 'Nom Complet', note AS 'Note Finale' FROM eleves;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>DISTINCT — Éliminer les Doublons</h3>
+    <p>Affiche uniquement les valeurs uniques, éliminant les répétitions.</p>
+    <pre><code>-- Classes uniques
+SELECT DISTINCT classe FROM eleves;
+
+-- Combinaison de colonnes distinctes
+SELECT DISTINCT classe, genre FROM eleves;
+
+-- Nombre de classes différentes
+SELECT COUNT(DISTINCT classe) FROM eleves;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>WHERE — Filtrer les Résultats</h3>
+    <p>Restreint les résultats selon des conditions spécifiques.</p>
+    <pre><code>-- Condition simple
+SELECT * FROM eleves WHERE classe = '3STI';
+
+-- Condition numérique
+SELECT * FROM eleves WHERE note > 15;
+
+-- Condition combinée
+SELECT * FROM eleves WHERE classe = '3STI' AND note >= 12;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>ORDER BY — Trier les Résultats</h3>
+    <p>Organise les résultats par ordre croissant (ASC) ou décroissant (DESC).</p>
+    <pre><code>-- Ordre alphabétique des noms
+SELECT * FROM eleves ORDER BY nom ASC;
+
+-- Notes du plus haut au plus bas
+SELECT * FROM eleves ORDER BY note DESC;
+
+-- Tri multiple: classe puis note
+SELECT * FROM eleves ORDER BY classe ASC, note DESC;
+
+-- Tri par ordre numérique de colonne
+SELECT nom, note FROM eleves ORDER BY 2 DESC; -- Tri par 2e colonne</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>LIMIT — Limiter le Nombre de Résultats</h3>
+    <p>Restrein le nombre de lignes retournées.</p>
+    <pre><code>-- Premiers 10 élèves
+SELECT * FROM eleves LIMIT 10;
+
+-- Résultats 11 à 20 (offset 10, limit 10)
+SELECT * FROM eleves LIMIT 10 OFFSET 10;
+
+-- Top 5 des meilleures notes
+SELECT * FROM eleves ORDER BY note DESC LIMIT 5;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>GROUP BY — Regrouper les Données</h3>
+    <p>Regroupe les lignes par des valeurs communes, souvent utilisé avec des agrégations.</p>
+    <pre><code>-- Nombre d'élèves par classe
+SELECT classe, COUNT(*) AS nombre FROM eleves GROUP BY classe;
+
+-- Moyenne par classe
+SELECT classe, AVG(note) AS moyenne FROM eleves GROUP BY classe;
+
+-- Grouper par plusieurs colonnes
+SELECT classe, genre, COUNT(*) AS nombre FROM eleves GROUP BY classe, genre;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>HAVING — Filtrer Après Regroupement</h3>
+    <p>Applique des conditions sur les résultats agrégés (WHERE filtre avant GROUP BY, HAVING après).</p>
+    <pre><code>-- Classes avec plus de 20 élèves
+SELECT classe, COUNT(*) AS nombre FROM eleves GROUP BY classe HAVING COUNT(*) > 20;
+
+-- Moyennes supérieures à 14
+SELECT classe, AVG(note) AS moyenne FROM eleves GROUP BY classe HAVING AVG(note) > 14;
+
+-- Combiner WHERE et HAVING
+SELECT classe, COUNT(*) AS nombre, AVG(note) AS moyenne 
+FROM eleves 
+WHERE annee = 2026 
+GROUP BY classe 
+HAVING COUNT(*) >= 15;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>💡 Requête Complète Combinée</h3>
+    <p>Exemple complet mêlant tous les éléments:</p>
+    <pre><code>-- Obtenir les classes avec les meilleures moyennes
+SELECT 
+  classe,
+  COUNT(*) AS nombre_eleves,
+  AVG(note) AS moyenne_classe,
+  MAX(note) AS meilleure_note
+FROM eleves 
+WHERE annee = 2026 
+GROUP BY classe 
+HAVING COUNT(*) >= 10
+ORDER BY moyenne_classe DESC
+LIMIT 5;</code></pre>
+  </div>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>

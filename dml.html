@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><title>5. Manipulation des données</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+
+<header><div class="wrap topbar"><div class="brand"><h1>Annexe SQL — Manipulation</h1></div><nav><a href="index.html" class="btn">🏠 Accueil</a><a href="reference.html" class="btn">📋 Référence</a><button class="btn" id="themeBtn">☀️</button></nav></div></header>
+<main class="wrap hero">
+  <div class="lesson-header"><span class="badge">Chapitre 5</span><h2 class="hero-title">Manipulation des données (DML)</h2><p class="hero-desc">Ajouter, modifier ou supprimer des enregistrements de données dans vos tables.</p></div>
+  
+  <div class="content-card">
+    <h3>INSERT INTO — Ajouter des Enregistrements</h3>
+    <p>Insère une ou plusieurs nouvelles lignes dans une table.</p>
+    <pre><code>-- Insérer une ligne avec toutes les colonnes
+INSERT INTO eleves VALUES (1, 'Ben Ali', 'Ahmed', '3STI', 15.5);
+
+-- Insérer en spécifiant les colonnes
+INSERT INTO eleves (id, nom, prenom, classe, note) 
+VALUES (2, 'Trabelsi', 'Fatima', '4STI', 16);
+
+-- Insérer plusieurs lignes à la fois
+INSERT INTO eleves (id, nom, prenom, classe, note) VALUES
+  (3, 'Dammak', 'Mohamed', '3STI', 14),
+  (4, 'Jebari', 'Leila', '4STI', 17),
+  (5, 'Samadi', 'Ali', '3STI', 13);</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>UPDATE — Modifier des Enregistrements</h3>
+    <p>Change les valeurs de colonnes pour les lignes correspondant à une condition.</p>
+    <pre><code>-- Modifier un élève spécifique
+UPDATE eleves SET note = 16 WHERE id = 1;
+
+-- Modifier plusieurs colonnes
+UPDATE eleves SET classe = '4STI', note = 18 WHERE nom = 'Ben Ali';
+
+-- Modifier plusieurs lignes avec condition
+UPDATE eleves SET note = note + 1 WHERE classe = '3STI';
+
+-- ⚠️ ATTENTION: modifier toute la table sans WHERE
+UPDATE eleves SET note = 15; -- Toutes les notes deviennent 15!</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>DELETE — Supprimer des Enregistrements</h3>
+    <p>Supprime les lignes correspondant à une condition.</p>
+    <pre><code>-- Supprimer un élève spécifique
+DELETE FROM eleves WHERE id = 1;
+
+-- Supprimer par condition
+DELETE FROM eleves WHERE classe = '3STI' AND note < 10;
+
+-- Supprimer avec LIKE
+DELETE FROM eleves WHERE nom LIKE 'T%';
+
+-- ⚠️ ATTENTION: supprimer sans WHERE supprime TOUTE la table!
+DELETE FROM eleves; -- Vide complètement la table!</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>💡 Bonnes Pratiques</h3>
+    <p>Conseils pour éviter les erreurs lors de modifications:</p>
+    <pre><code>-- ✓ BON: Toujours vérifier avec SELECT d'abord
+SELECT * FROM eleves WHERE classe = '3STI'; -- Vérifier avant suppression
+DELETE FROM eleves WHERE classe = '3STI';
+
+-- ✗ MAUVAIS: Pas de condition (danger!)
+DELETE FROM eleves; -- Supprime tout!
+
+-- ✓ BON: Utiliser une transaction pour tester
+-- BEGIN TRANSACTION; (selon le SGBD)
+-- UPDATE eleves SET note = note + 1;
+-- ROLLBACK; (annuler si erreur)
+
+-- Insérer avec valeur calculée
+INSERT INTO eleves (id, nom, prenom, classe, note)
+SELECT id+100, nom, prenom, classe, note FROM eleves_archive;</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>Cas d'usage: Opération Complète</h3>
+    <p>Exemple combinant insertion, modification et suppression:</p>
+    <pre><code>-- 1. Ajouter un nouvel élève
+INSERT INTO eleves (id, nom, prenom, classe, note) 
+VALUES (6, 'Nouvel', 'Élève', '3STI', 12);
+
+-- 2. Corriger une note
+UPDATE eleves SET note = 15 WHERE nom = 'Nouvel';
+
+-- 3. Supprimer les mauvais élèves (< 8)
+DELETE FROM eleves WHERE note < 8;
+
+-- 4. Vérifier le résultat
+SELECT * FROM eleves ORDER BY note DESC;</code></pre>
+  </div>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>

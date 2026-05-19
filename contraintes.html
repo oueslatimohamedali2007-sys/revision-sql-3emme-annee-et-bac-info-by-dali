@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><title>3. Contraintes d'intégrité</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+
+<header><div class="wrap topbar"><div class="brand"><h1>Annexe SQL — Contraintes</h1></div><nav><a href="index.html" class="btn">🏠 Accueil</a><a href="reference.html" class="btn">📋 Référence</a><button class="btn" id="themeBtn">☀️</button></nav></div></header>
+<main class="wrap hero">
+  <div class="lesson-header"><span class="badge">Chapitre 3</span><h2 class="hero-title">Contraintes d'intégrité</h2><p class="hero-desc">Règles strictes de protection de la cohérence et de la validité des données.</p></div>
+  
+  <div class="content-card">
+    <h3>PRIMARY KEY — Clé Primaire</h3>
+    <p>Identifie de façon unique chaque ligne. Une seule par table, non NULL et unique.</p>
+    <pre><code>-- Lors de la création
+CREATE TABLE eleves (
+  id INT PRIMARY KEY,
+  nom VARCHAR(50)
+);
+
+-- Ou après la création
+ALTER TABLE eleves ADD PRIMARY KEY (id);
+
+-- Avec auto-incrémentation
+CREATE TABLE eleves (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(50)
+);</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>NOT NULL — Valeur Obligatoire</h3>
+    <p>Garantit que la colonne doit toujours avoir une valeur (pas vide).</p>
+    <pre><code>CREATE TABLE eleves (
+  id INT PRIMARY KEY,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50),
+  email VARCHAR(100) NOT NULL
+);
+
+-- ❌ Erreur: on ne peut pas insérer NULL
+INSERT INTO eleves (id, nom, email) VALUES (1, NULL, 'test@email.com');</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>UNIQUE — Valeur Unique</h3>
+    <p>Chaque ligne doit avoir une valeur différente (pas de doublon).</p>
+    <pre><code>CREATE TABLE eleves (
+  id INT PRIMARY KEY,
+  nom VARCHAR(50),
+  email VARCHAR(100) UNIQUE,
+  numero_inscription INT UNIQUE
+);
+
+-- ❌ Erreur: doublon d'email
+INSERT INTO eleves (id, email) VALUES (1, 'ali@mail.com');
+INSERT INTO eleves (id, email) VALUES (2, 'ali@mail.com'); -- Doublon!</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>CHECK — Vérification de Valeur</h3>
+    <p>Vérifie que la valeur respecte une condition logique.</p>
+    <pre><code>CREATE TABLE eleves (
+  id INT PRIMARY KEY,
+  nom VARCHAR(50),
+  note INT CHECK (note >= 0 AND note <= 20),
+  age INT CHECK (age >= 3 AND age <= 100)
+);
+
+-- ❌ Erreur: note hors limites
+INSERT INTO eleves VALUES (1, 'Ali', 25, 15); -- 25 > 20!</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>DEFAULT — Valeur Par Défaut</h3>
+    <p>Attribue automatiquement une valeur si aucune n'est fournie.</p>
+    <pre><code>CREATE TABLE eleves (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(50),
+  statut VARCHAR(20) DEFAULT 'Inscrit',
+  date_inscription DATE DEFAULT CURDATE(),
+  actif BOOLEAN DEFAULT TRUE
+);
+
+-- La date sera remplie automatiquement
+INSERT INTO eleves (nom) VALUES ('Ali');</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>FOREIGN KEY — Clé Étrangère (Relation)</h3>
+    <p>Lie une colonne d'une table à la clé primaire d'une autre table.</p>
+    <pre><code>-- Tables liées
+CREATE TABLE classes (
+  id INT PRIMARY KEY,
+  nom VARCHAR(20)
+);
+
+CREATE TABLE eleves (
+  id INT PRIMARY KEY,
+  nom VARCHAR(50),
+  id_classe INT,
+  FOREIGN KEY (id_classe) REFERENCES classes(id)
+);
+
+-- ❌ Erreur: id_classe n'existe pas
+INSERT INTO eleves VALUES (1, 'Ali', 999); -- 999 n'existe pas!</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>ON DELETE CASCADE / ON UPDATE CASCADE — Actions en Cascade</h3>
+    <p>Supprime ou met à jour automatiquement les lignes filles lors de changements dans la table mère.</p>
+    <pre><code>-- Créer la relation avec cascade
+ALTER TABLE eleves 
+ADD CONSTRAINT fk_classe 
+FOREIGN KEY (id_classe) REFERENCES classes(id) 
+ON DELETE CASCADE 
+ON UPDATE CASCADE;
+
+-- Exemple avec CASCADE:
+DELETE FROM classes WHERE id = 1;
+-- ✓ Tous les élèves de cette classe sont automatiquement supprimés!
+
+-- Sans CASCADE (erreur):
+-- ❌ Cannot delete class because students are linked</code></pre>
+  </div>
+
+  <div class="content-card">
+    <h3>💡 Exemple Complet: Base Structurée</h3>
+    <p>Illustration complète avec contraintes imbriquées:</p>
+    <pre><code>-- Créer la base
+CREATE DATABASE school;
+USE school;
+
+-- Table parent (classes)
+CREATE TABLE classes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(20) NOT NULL UNIQUE,
+  salle INT CHECK (salle > 0),
+  date_creation DATE DEFAULT CURDATE()
+);
+
+-- Table enfant (élèves)
+CREATE TABLE eleves (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE,
+  note DECIMAL(4,2) CHECK (note >= 0 AND note <= 20),
+  id_classe INT NOT NULL,
+  date_inscription DATETIME DEFAULT NOW(),
+  actif BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (id_classe) REFERENCES classes(id) ON DELETE CASCADE
+);</code></pre>
+  </div>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>

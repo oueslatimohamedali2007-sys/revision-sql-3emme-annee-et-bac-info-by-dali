@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Référence SQL Complète</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="sql.png">
+  <style>
+    .reference-image {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      margin: 24px 0;
+    }
+
+    .ref-section {
+      margin-bottom: 40px;
+    }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      overflow-x: auto;
+      display: block;
+    }
+
+    .ref-table th,
+    .ref-table td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+
+    .ref-table th {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--brand);
+      font-weight: 600;
+    }
+
+    .ref-table td {
+      background: var(--card);
+    }
+
+    .ref-table tbody tr:hover {
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .command {
+      font-family: 'Fira Code', monospace;
+      color: var(--brand);
+      font-weight: 600;
+    }
+
+    .note {
+      background: rgba(59, 130, 246, 0.05);
+      border-left: 4px solid var(--brand);
+      padding: 12px;
+      border-radius: 4px;
+      margin: 16px 0;
+      font-size: 0.9rem;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .comparison-box {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .comparison-box h4 {
+      color: var(--brand);
+      margin-bottom: 8px;
+    }
+
+    .comparison-box code {
+      display: block;
+      background: rgba(0, 0, 0, 0.05);
+      padding: 8px;
+      border-radius: 4px;
+      margin: 8px 0;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<button class="floating-btn" id="topBtn">↑</button>
+
+<header>
+  <div class="wrap topbar">
+    <div class="brand">
+      <h1>Référence SQL</h1>
+      <p>Guide complet officiel</p>
+    </div>
+    <nav>
+      <a href="index.html" class="btn">🏠 Accueil</a>
+      <button class="btn" id="themeBtn">☀️</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap hero">
+  <div class="lesson-header">
+    <span class="badge">Référence Complète</span>
+    <h2 class="hero-title">Guide SQL Interactif</h2>
+    <p class="hero-desc">Table de référence officielle pour tous les chapitres du programme SI — 3ème et 4ème STI.</p>
+  </div>
+
+  <div class="content-card">
+    <h3>📋 Tableau de Référence Officiel</h3>
+    <p>Image complète du programme officiel avec tous les concepts, commandes et leur disponibilité par niveau:</p>
+    <p style="color: var(--muted); font-size: 0.9rem;">Source: Programme officiel SI — Sections 3 STI et 4 STI</p>
+  </div>
+
+  <div class="ref-section content-card">
+    <h3>🔍 Résumé par Catégories</h3>
+
+    <div class="comparison-grid">
+      <div class="comparison-box">
+        <h4>📚 DDL (Définition)</h4>
+        <p>Structure des bases et tables</p>
+        <code>CREATE DATABASE</code>
+        <code>CREATE TABLE</code>
+        <code>ALTER TABLE</code>
+        <code>DROP DATABASE</code>
+      </div>
+
+      <div class="comparison-box">
+        <h4>💾 DML (Manipulation)</h4>
+        <p>Modification des données</p>
+        <code>INSERT INTO</code>
+        <code>UPDATE</code>
+        <code>DELETE FROM</code>
+      </div>
+
+      <div class="comparison-box">
+        <h4>🔍 DQL (Consultation)</h4>
+        <p>Interrogation des données</p>
+        <code>SELECT</code>
+        <code>WHERE</code>
+        <code>GROUP BY</code>
+      </div>
+
+      <div class="comparison-box">
+        <h4>🔒 Contraintes</h4>
+        <p>Intégrité et relations</p>
+        <code>PRIMARY KEY</code>
+        <code>FOREIGN KEY</code>
+        <code>CASCADE</code>
+      </div>
+
+      <div class="comparison-box">
+        <h4>📊 Agrégations</h4>
+        <p>Calculs et statistiques</p>
+        <code>COUNT()</code>
+        <code>SUM()</code>
+        <code>AVG()</code>
+      </div>
+
+      <div class="comparison-box">
+        <h4>📅 Temporelles</h4>
+        <p>Gestion des dates</p>
+        <code>NOW()</code>
+        <code>DATEDIFF()</code>
+        <code>DATE()</code>
+      </div>
+    </div>
+
+    <div class="note">
+      💡 <strong>Conseil:</strong> Consultez cette page comme référence rapide et naviguez vers les chapitres détaillés depuis l'accueil pour des explications complètes et des exemples.
+    </div>
+  </div>
+
+  <div class="ref-section content-card">
+    <h3>⚡ Opérateurs Essentiels</h3>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Opérateur</th>
+          <th>Usage</th>
+          <th>Exemple</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="command">=</span></td>
+          <td>Égalité</td>
+          <td><code>WHERE id = 5</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">!=</span> ou <span class="command">&lt;&gt;</span></td>
+          <td>Inégalité</td>
+          <td><code>WHERE nom != 'Ali'</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">&gt;, &lt;, &gt;=, &lt;=</span></td>
+          <td>Comparaisons</td>
+          <td><code>WHERE note &gt; 15</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">LIKE</span></td>
+          <td>Motif textuel</td>
+          <td><code>WHERE nom LIKE 'A%'</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">BETWEEN</span></td>
+          <td>Intervalle</td>
+          <td><code>WHERE note BETWEEN 10 AND 20</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">IN</span></td>
+          <td>Liste de valeurs</td>
+          <td><code>WHERE classe IN ('3STI', '4STI')</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">IS NULL</span></td>
+          <td>Valeur nulle</td>
+          <td><code>WHERE email IS NULL</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">AND, OR, NOT</span></td>
+          <td>Logique</td>
+          <td><code>WHERE note &gt; 10 AND nom LIKE 'B%'</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ref-section content-card">
+    <h3>📊 Fonctions d'Agrégation</h3>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Fonction</th>
+          <th>Description</th>
+          <th>Exemple</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="command">COUNT()</span></td>
+          <td>Compte les lignes</td>
+          <td><code>COUNT(*)</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">SUM()</span></td>
+          <td>Somme de valeurs</td>
+          <td><code>SUM(note)</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">AVG()</span></td>
+          <td>Moyenne de valeurs</td>
+          <td><code>AVG(note)</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">MAX()</span></td>
+          <td>Valeur maximale</td>
+          <td><code>MAX(note)</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">MIN()</span></td>
+          <td>Valeur minimale</td>
+          <td><code>MIN(note)</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ref-section content-card">
+    <h3>📅 Fonctions Temporelles</h3>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Fonction</th>
+          <th>Description</th>
+          <th>Retour</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="command">NOW()</span></td>
+          <td>Date et heure actuelles</td>
+          <td>2026-05-19 14:30:45</td>
+        </tr>
+        <tr>
+          <td><span class="command">DATE()</span></td>
+          <td>Extrait la date d'un DATETIME</td>
+          <td>2026-05-19</td>
+        </tr>
+        <tr>
+          <td><span class="command">DAY()</span></td>
+          <td>Jour du mois</td>
+          <td>1-31</td>
+        </tr>
+        <tr>
+          <td><span class="command">MONTH()</span></td>
+          <td>Mois de l'année</td>
+          <td>1-12</td>
+        </tr>
+        <tr>
+          <td><span class="command">YEAR()</span></td>
+          <td>Année</td>
+          <td>2026</td>
+        </tr>
+        <tr>
+          <td><span class="command">DATEDIFF()</span></td>
+          <td>Différence en jours</td>
+          <td>13</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ref-section content-card">
+    <h3>🏷️ Types de Données Principaux</h3>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Catégorie</th>
+          <th>Exemple</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="command">INT</span></td>
+          <td>Entier</td>
+          <td><code>INT</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">DECIMAL(p,s)</span></td>
+          <td>Décimal précis</td>
+          <td><code>DECIMAL(10,2)</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">VARCHAR(n)</span></td>
+          <td>Chaîne variable</td>
+          <td><code>VARCHAR(50)</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">CHAR(n)</span></td>
+          <td>Chaîne fixe</td>
+          <td><code>CHAR(5)</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">TEXT</span></td>
+          <td>Texte long</td>
+          <td><code>TEXT</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">DATE</span></td>
+          <td>Date seule</td>
+          <td><code>2026-05-19</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">TIME</span></td>
+          <td>Heure seule</td>
+          <td><code>14:30:45</code></td>
+        </tr>
+        <tr>
+          <td><span class="command">DATETIME</span></td>
+          <td>Date + Heure</td>
+          <td><code>2026-05-19 14:30:45</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 Référence SQL — Section SI (3 STI & 4 STI)</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
